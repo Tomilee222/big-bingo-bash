@@ -47,6 +47,7 @@
     --bingo-ball: 45 100% 90%;
     --bingo-called: 160 75% 45%;
     --bingo-marked: 45 100% 65%;
+    --bingo-neon: 160 100% 50%;
     --neon-glow: 160 100% 50%;
     --winner-gold: 45 100% 75%;
 
@@ -130,5 +131,83 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Custom animations for bingo game interactions */
+  .animate-number-glow {
+    animation: number-glow 2s ease-in-out infinite alternate;
+  }
+
+  .animate-card-mark {
+    animation: card-mark 0.6s ease-out;
+  }
+
+  .animate-bingo-ball-drop {
+    animation: bingo-ball-drop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .animate-winner-celebration {
+    animation: winner-celebration 2s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+
+  @keyframes number-glow {
+    0% {
+      box-shadow: 0 0 5px hsl(160 100% 50% / 0.3);
+    }
+    100% {
+      box-shadow: 0 0 20px hsl(160 100% 50% / 0.6), 0 0 30px hsl(160 100% 50% / 0.4);
+    }
+  }
+
+  @keyframes card-mark {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bingo-ball-drop {
+    0% {
+      transform: translateY(-20px) scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(5px) scale(1.05);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes winner-celebration {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
