@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface BingoCell {
@@ -79,6 +79,21 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
 
     onCellMark?.(row, col);
   };
+
+  // Update cell "called" status whenever calledNumbers prop changes
+  useEffect(() => {
+    setCard(prev =>
+      prev.map(column =>
+        column.map(cell => {
+          // If the cell has a number and it exists in the called numbers list, mark it as called
+          if (cell.number && calledNumbers.includes(cell.number) && !cell.called) {
+            return { ...cell, called: true };
+          }
+          return cell;
+        })
+      )
+    );
+  }, [calledNumbers]);
 
   return (
     <div className={cn("bg-card border border-border rounded-xl p-4 shadow-lg", className)}>
