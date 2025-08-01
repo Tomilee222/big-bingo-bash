@@ -14,7 +14,7 @@ const Index = () => {
   const [currentPlayers] = useState<Player[]>([
     { id: '1', name: 'You', isReady: true, joinedAt: new Date() },
     { id: '2', name: 'Alice', isReady: true, joinedAt: new Date(Date.now() - 60000) },
-    { id: '3', name: 'Bob', isReady: false, joinedAt: new Date(Date.now() - 120000) },
+    { id: '3', name: 'Bob', isReady: true, joinedAt: new Date(Date.now() - 120000) },
     { id: '4', name: 'Charlie', isReady: true, joinedAt: new Date(Date.now() - 180000) },
   ]);
 
