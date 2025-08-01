@@ -52,6 +52,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				bingo: {
+					ball: 'hsl(var(--bingo-ball))',
+					called: 'hsl(var(--bingo-called))',
+					marked: 'hsl(var(--bingo-marked))',
+					neon: 'hsl(var(--neon-glow))',
+					winner: 'hsl(var(--winner-gold))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,11 +91,62 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'bingo-ball-drop': {
+					'0%': {
+						transform: 'translateY(-100px) scale(0)',
+						opacity: '0'
+					},
+					'50%': {
+						transform: 'translateY(0) scale(1.1)',
+						opacity: '1'
+					},
+					'100%': {
+						transform: 'translateY(0) scale(1)',
+						opacity: '1'
+					}
+				},
+				'number-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 10px hsl(var(--neon-glow) / 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 25px hsl(var(--neon-glow)), 0 0 35px hsl(var(--neon-glow))'
+					}
+				},
+				'card-mark': {
+					'0%': {
+						transform: 'scale(1)',
+						backgroundColor: 'hsl(var(--card))'
+					},
+					'50%': {
+						transform: 'scale(0.9)',
+						backgroundColor: 'hsl(var(--bingo-marked))'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						backgroundColor: 'hsl(var(--bingo-marked))'
+					}
+				},
+				'winner-celebration': {
+					'0%, 100%': {
+						transform: 'scale(1) rotate(0deg)'
+					},
+					'25%': {
+						transform: 'scale(1.05) rotate(1deg)'
+					},
+					'75%': {
+						transform: 'scale(1.05) rotate(-1deg)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'bingo-ball-drop': 'bingo-ball-drop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+				'number-glow': 'number-glow 2s ease-in-out infinite',
+				'card-mark': 'card-mark 0.3s ease-out',
+				'winner-celebration': 'winner-celebration 0.6s ease-in-out infinite'
 			}
 		}
 	},
