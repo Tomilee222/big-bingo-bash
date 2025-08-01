@@ -20,6 +20,7 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
   const [gameActive, setGameActive] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
+  const [highlightedNumbers, setHighlightedNumbers] = useState<number[]>([]);
   const { toast } = useToast();
 
   // Simulate automatic number calling
@@ -60,6 +61,16 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
     return '';
   };
 
+  const handleNumberClick = (number: number) => {
+    setHighlightedNumbers(prev => {
+      if (prev.includes(number)) {
+        return prev.filter(n => n !== number);
+      } else {
+        return [...prev, number];
+      }
+    });
+  };
+
   const handleBingo = () => {
     setWinner(playerId);
     setGameActive(false);
@@ -83,6 +94,14 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
     toast({
       title: isMuted ? "Sound Enabled" : "Sound Muted",
       description: isMuted ? "You'll hear number announcements" : "Number announcements muted",
+    });
+  };
+
+  const clearHighlights = () => {
+    setHighlightedNumbers([]);
+    toast({
+      title: "Highlights Cleared",
+      description: "All number highlights have been cleared",
     });
   };
 
@@ -138,6 +157,8 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
           <NumberCaller
             currentNumber={currentNumber}
             previousNumbers={calledNumbers}
+            onNumberClick={handleNumberClick}
+            highlightedNumbers={highlightedNumbers}
             className="sticky top-4"
           />
         </div>
@@ -149,6 +170,7 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
             <BingoCard
               playerId={playerId}
               calledNumbers={calledNumbers}
+              highlightedNumbers={highlightedNumbers}
               onCellMark={() => {
                 // Check for winning conditions here
                 // For demo purposes, we'll simulate a win after 15 numbers
@@ -163,12 +185,14 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
             <BingoCard
               playerId="Demo 1"
               calledNumbers={calledNumbers}
+              highlightedNumbers={highlightedNumbers}
               className="opacity-75"
             />
             
             <BingoCard
               playerId="Demo 2"
               calledNumbers={calledNumbers}
+              highlightedNumbers={highlightedNumbers}
               className="opacity-75"
             />
           </div>
@@ -181,6 +205,14 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
               disabled={!gameActive || winner !== null}
             >
               Call BINGO!
+            </Button>
+            
+            <Button
+              variant="outline"
+              onClick={clearHighlights}
+              disabled={highlightedNumbers.length === 0}
+            >
+              Clear Highlights
             </Button>
             
             <Button
@@ -207,8 +239,8 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
         </div>
         
         <div className="bg-card p-4 rounded-lg text-center">
-          <div className="text-2xl font-bold text-primary">{playerCount}</div>
-          <div className="text-sm text-muted-foreground">Active Players</div>
+          <div className="text-2xl font-bold text-primary">{highlightedNumbers.length}</div>
+          <div className="text-sm text-muted-foreground">Highlighted</div>
         </div>
         
         <div className="bg-card p-4 rounded-lg text-center">

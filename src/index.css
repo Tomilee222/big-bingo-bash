@@ -47,6 +47,7 @@
     --bingo-ball: 45 100% 90%;
     --bingo-called: 160 75% 45%;
     --bingo-marked: 45 100% 65%;
+    --bingo-neon: 160 100% 50%;
     --neon-glow: 160 100% 50%;
     --winner-gold: 45 100% 75%;
 
@@ -130,5 +131,111 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .bg-bingo-neon {
+    background-color: hsl(160 100% 50%);
+  }
+  
+  .text-bingo-neon {
+    color: hsl(160 100% 50%);
+  }
+  
+  .border-bingo-neon {
+    border-color: hsl(160 100% 50%);
+  }
+  
+  .ring-bingo-neon {
+    --tw-ring-color: hsl(160 100% 50%);
+  }
+  
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-winner-celebration {
+    animation: winnerCelebration 2s ease-in-out infinite;
+  }
+  
+  .animate-card-mark {
+    animation: cardMark 0.3s ease-out;
+  }
+  
+  .animate-number-glow {
+    animation: numberGlow 1.5s ease-in-out infinite alternate;
+  }
+  
+  .animate-bingo-ball-drop {
+    animation: bingoBallDrop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes winnerCelebration {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes cardMark {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes numberGlow {
+  0% {
+    box-shadow: 0 0 5px hsl(160 75% 45%);
+  }
+  100% {
+    box-shadow: 0 0 20px hsl(160 75% 45%), 0 0 30px hsl(160 75% 45%);
+  }
+}
+
+@keyframes bingoBallDrop {
+  0% {
+    transform: translateY(-50px) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(10px) scale(1.1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
 }

@@ -56,7 +56,7 @@ export default {
 					ball: 'hsl(var(--bingo-ball))',
 					called: 'hsl(var(--bingo-called))',
 					marked: 'hsl(var(--bingo-marked))',
-					neon: 'hsl(var(--neon-glow))',
+					neon: 'hsl(var(--bingo-neon))',
 					winner: 'hsl(var(--winner-gold))'
 				},
 				sidebar: {

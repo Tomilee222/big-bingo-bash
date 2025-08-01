@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface BingoCell {
@@ -6,16 +6,24 @@ interface BingoCell {
   number: number | null;
   marked: boolean;
   called: boolean;
+  highlighted: boolean;
 }
 
 interface BingoCardProps {
   playerId: string;
   onCellMark?: (row: number, col: number) => void;
   calledNumbers: number[];
+  highlightedNumbers?: number[];
   className?: string;
 }
 
-export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: BingoCardProps) => {
+export const BingoCard = ({ 
+  playerId, 
+  onCellMark, 
+  calledNumbers, 
+  highlightedNumbers = [],
+  className 
+}: BingoCardProps) => {
   const [card, setCard] = useState<BingoCell[][]>(() => generateBingoCard());
 
   function generateBingoCard(): BingoCell[][] {
@@ -42,7 +50,8 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
             letter: letters[col],
             number: null,
             marked: true,
-            called: false
+            called: false,
+            highlighted: false
           });
         } else {
           let number: number;
@@ -55,7 +64,8 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
             letter: letters[col],
             number,
             marked: false,
-            called: calledNumbers.includes(number)
+            called: calledNumbers.includes(number),
+            highlighted: highlightedNumbers.includes(number)
           });
         }
       }
@@ -65,6 +75,25 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
 
     return grid;
   }
+
+  // Update card when calledNumbers or highlightedNumbers change
+  const updateCard = () => {
+    setCard(prev => {
+      const newCard = prev.map(column =>
+        column.map(cell => ({
+          ...cell,
+          called: cell.number ? calledNumbers.includes(cell.number) : false,
+          highlighted: cell.number ? highlightedNumbers.includes(cell.number) : false
+        }))
+      );
+      return newCard;
+    });
+  };
+
+  // Update card when calledNumbers or highlightedNumbers change
+  useEffect(() => {
+    updateCard();
+  }, [calledNumbers, highlightedNumbers]);
 
   const handleCellClick = (row: number, col: number) => {
     const cell = card[col][row];
@@ -114,9 +143,11 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
                   "aspect-square flex items-center justify-center text-sm font-medium rounded-lg border-2 transition-all duration-300",
                   cell.marked 
                     ? "bg-bingo-marked text-black border-bingo-marked animate-card-mark" 
-                    : cell.called 
-                      ? "bg-bingo-called text-white border-bingo-called animate-number-glow" 
-                      : "bg-card text-card-foreground border-border hover:border-primary/50",
+                    : cell.highlighted
+                      ? "bg-bingo-neon text-white border-bingo-neon animate-pulse shadow-lg"
+                      : cell.called 
+                        ? "bg-bingo-called text-white border-bingo-called animate-number-glow" 
+                        : "bg-card text-card-foreground border-border hover:border-primary/50",
                   isClickable && "cursor-pointer hover:scale-105",
                   isFreeSpace && "bg-accent text-accent-foreground border-accent"
                 )}
