@@ -20,6 +20,7 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
   const [gameActive, setGameActive] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
+  const [highlightedNumbers, setHighlightedNumbers] = useState<Set<number>>(new Set());
   const { toast } = useToast();
 
   // Simulate automatic number calling
@@ -58,6 +59,24 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
     if (num >= 46 && num <= 60) return 'G';
     if (num >= 61 && num <= 75) return 'O';
     return '';
+  };
+
+  const handleNumberClick = (number: number) => {
+    setHighlightedNumbers(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(number)) {
+        newSet.delete(number);
+      } else {
+        newSet.add(number);
+      }
+      return newSet;
+    });
+    
+    toast({
+      title: `${getLetterForNumber(number)}-${number}`,
+      description: "Number highlighted!",
+      duration: 1000,
+    });
   };
 
   const handleBingo = () => {
@@ -138,6 +157,8 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
           <NumberCaller
             currentNumber={currentNumber}
             previousNumbers={calledNumbers}
+            highlightedNumbers={highlightedNumbers}
+            onNumberClick={handleNumberClick}
             className="sticky top-4"
           />
         </div>
@@ -149,6 +170,7 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
             <BingoCard
               playerId={playerId}
               calledNumbers={calledNumbers}
+              highlightedNumbers={highlightedNumbers}
               onCellMark={() => {
                 // Check for winning conditions here
                 // For demo purposes, we'll simulate a win after 15 numbers
@@ -163,12 +185,14 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
             <BingoCard
               playerId="Demo 1"
               calledNumbers={calledNumbers}
+              highlightedNumbers={highlightedNumbers}
               className="opacity-75"
             />
             
             <BingoCard
               playerId="Demo 2"
               calledNumbers={calledNumbers}
+              highlightedNumbers={highlightedNumbers}
               className="opacity-75"
             />
           </div>

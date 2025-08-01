@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface BingoCell {
@@ -12,10 +12,11 @@ interface BingoCardProps {
   playerId: string;
   onCellMark?: (row: number, col: number) => void;
   calledNumbers: number[];
+  highlightedNumbers?: Set<number>;
   className?: string;
 }
 
-export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: BingoCardProps) => {
+export const BingoCard = ({ playerId, onCellMark, calledNumbers, highlightedNumbers = new Set(), className }: BingoCardProps) => {
   const [card, setCard] = useState<BingoCell[][]>(() => generateBingoCard());
 
   function generateBingoCard(): BingoCell[][] {
@@ -66,6 +67,19 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
     return grid;
   }
 
+  // Update card when called numbers change
+  useEffect(() => {
+    setCard(prev => {
+      const newCard = prev.map(column =>
+        column.map(cell => ({
+          ...cell,
+          called: cell.number ? calledNumbers.includes(cell.number) : false
+        }))
+      );
+      return newCard;
+    });
+  }, [calledNumbers]);
+
   const handleCellClick = (row: number, col: number) => {
     const cell = card[col][row];
     if (!cell.number || !cell.called) return;
@@ -78,6 +92,12 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
     });
 
     onCellMark?.(row, col);
+  };
+
+  // Check if a number is currently highlighted in the number caller
+  const isNumberHighlighted = (number: number | null) => {
+    if (!number) return false;
+    return highlightedNumbers.has(number);
   };
 
   return (
@@ -104,6 +124,7 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
             const cell = card[col][row];
             const isFreeSpace = row === 2 && col === 2;
             const isClickable = cell.called && cell.number && !cell.marked;
+            const isHighlighted = isNumberHighlighted(cell.number);
             
             return (
               <button
@@ -112,16 +133,22 @@ export const BingoCard = ({ playerId, onCellMark, calledNumbers, className }: Bi
                 disabled={!isClickable && !isFreeSpace}
                 className={cn(
                   "aspect-square flex items-center justify-center text-sm font-medium rounded-lg border-2 transition-all duration-300",
+                  "touch-manipulation select-none",
                   cell.marked 
                     ? "bg-bingo-marked text-black border-bingo-marked animate-card-mark" 
                     : cell.called 
                       ? "bg-bingo-called text-white border-bingo-called animate-number-glow" 
                       : "bg-card text-card-foreground border-border hover:border-primary/50",
-                  isClickable && "cursor-pointer hover:scale-105",
+                  isClickable && "cursor-pointer hover:scale-105 hover:shadow-lg active:scale-95",
+                  isHighlighted && !cell.marked && "ring-2 ring-bingo-neon ring-opacity-75 shadow-lg",
                   isFreeSpace && "bg-accent text-accent-foreground border-accent"
                 )}
+                title={cell.number ? `${cell.letter}-${cell.number}` : "FREE SPACE"}
               >
                 {isFreeSpace ? "FREE" : cell.number}
+                {isHighlighted && !cell.marked && (
+                  <div className="absolute inset-0 rounded-lg bg-bingo-neon opacity-20 animate-pulse" />
+                )}
               </button>
             );
           })

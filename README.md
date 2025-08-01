@@ -1,73 +1,70 @@
-# Welcome to your Lovable project
+# Big Bingo Bash
 
-## Project info
+A modern, interactive bingo game built with React, TypeScript, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/d24e7101-40a3-49c5-8e2c-e417c8b7100e
+## Features
 
-## How can I edit this code?
+### 🎯 Interactive Number Calling
+- **Click & Touch Support**: Players can click or touch called numbers in the Number Caller panel
+- **Visual Highlighting**: Clicked numbers are highlighted with a golden background and pulse animation
+- **Cross-Reference**: When you click a number in the Number Caller, corresponding cells on your bingo cards are highlighted with a neon ring
+- **Touch-Friendly**: Optimized for both desktop and mobile devices with touch-manipulation CSS
 
-There are several ways of editing your application.
+### 🎮 Game Features
+- **Real-time Number Calling**: Automatic number calling with customizable intervals
+- **Multiple Bingo Cards**: Support for multiple players with individual cards
+- **Visual Feedback**: Rich animations and visual effects for game interactions
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 
-**Use Lovable**
+### 🎨 Visual Enhancements
+- **Animated Number Balls**: Current number displays with drop-in animation
+- **Glowing Effects**: Called numbers glow with neon effects
+- **Marked Cells**: Clicked bingo cells animate with scale and color changes
+- **Highlighted Numbers**: Clicked numbers in the caller show pulse animations
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d24e7101-40a3-49c5-8e2c-e417c8b7100e) and start prompting.
+## How to Play
 
-Changes made via Lovable will be committed automatically to this repo.
+1. **Start the Game**: The game automatically begins calling numbers
+2. **Click Called Numbers**: In the Number Caller panel, click on any called number to highlight it
+3. **Mark Your Cards**: Click on matching numbers on your bingo cards to mark them
+4. **Visual Feedback**: Highlighted numbers in the caller will show corresponding highlights on your cards
+5. **Call BINGO**: When you have a winning pattern, click the "Call BINGO!" button
 
-**Use your preferred IDE**
+## Technical Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **React 18** with TypeScript for type safety
+- **Tailwind CSS** for styling with custom animations
+- **Shadcn/ui** components for consistent UI
+- **Responsive Design** with mobile-first approach
+- **Touch Optimized** with proper touch event handling
+- **State Management** with React hooks for game state
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+```bash
+# Install dependencies
+npm install
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+## Game Controls
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Pause/Resume**: Control the automatic number calling
+- **Mute/Unmute**: Toggle sound notifications
+- **Number Highlighting**: Click any called number to highlight it
+- **Card Marking**: Click on called numbers on your cards to mark them
 
-**Use GitHub Codespaces**
+## Mobile Support
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The game is fully optimized for mobile devices with:
+- Touch-friendly button sizes
+- Responsive grid layouts
+- Optimized animations for mobile performance
+- Proper touch event handling
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/d24e7101-40a3-49c5-8e2c-e417c8b7100e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Enjoy playing Big Bingo Bash! 🎉

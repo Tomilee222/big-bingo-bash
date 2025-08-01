@@ -4,10 +4,12 @@ import { cn } from '@/lib/utils';
 interface NumberCallerProps {
   currentNumber: number | null;
   previousNumbers: number[];
+  highlightedNumbers?: Set<number>;
   className?: string;
+  onNumberClick?: (number: number) => void;
 }
 
-export const NumberCaller = ({ currentNumber, previousNumbers, className }: NumberCallerProps) => {
+export const NumberCaller = ({ currentNumber, previousNumbers, highlightedNumbers = new Set(), className, onNumberClick }: NumberCallerProps) => {
   const [isRevealing, setIsRevealing] = useState(false);
 
   useEffect(() => {
@@ -25,6 +27,10 @@ export const NumberCaller = ({ currentNumber, previousNumbers, className }: Numb
     if (num >= 46 && num <= 60) return 'G';
     if (num >= 61 && num <= 75) return 'O';
     return '';
+  };
+
+  const handleNumberClick = (number: number) => {
+    onNumberClick?.(number);
   };
 
   return (
@@ -73,19 +79,46 @@ export const NumberCaller = ({ currentNumber, previousNumbers, className }: Numb
       {/* Previous numbers */}
       <div className="space-y-3">
         <h3 className="text-lg font-semibold text-foreground">Called Numbers</h3>
-        <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
-          {previousNumbers.slice(-24).map((number, index) => (
-            <div
-              key={`${number}-${index}`}
-              className="aspect-square flex items-center justify-center bg-muted text-muted-foreground text-xs rounded border"
-            >
-              {number}
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-muted-foreground">
-          {previousNumbers.length} numbers called
+        <p className="text-xs text-muted-foreground mb-2">
+          Click numbers to highlight them
         </p>
+        <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
+          {previousNumbers.slice(-24).map((number, index) => {
+            const isClicked = highlightedNumbers.has(number);
+            const isCurrent = number === currentNumber;
+            
+            return (
+              <button
+                key={`${number}-${index}`}
+                onClick={() => handleNumberClick(number)}
+                className={cn(
+                  "aspect-square flex items-center justify-center text-xs rounded border transition-all duration-200",
+                  "touch-manipulation select-none",
+                  "hover:scale-110 hover:shadow-md active:scale-95",
+                  isClicked 
+                    ? "bg-bingo-marked text-black border-bingo-marked shadow-lg animate-pulse" 
+                    : isCurrent
+                      ? "bg-bingo-called text-white border-bingo-called animate-number-glow"
+                      : "bg-muted text-muted-foreground border-border hover:bg-accent hover:text-accent-foreground"
+                )}
+                title={`${getLetterForNumber(number)}-${number}`}
+              >
+                {number}
+                {isClicked && (
+                  <div className="absolute inset-0 rounded border-2 border-bingo-marked opacity-50 animate-ping" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex justify-between items-center text-xs text-muted-foreground">
+          <span>{previousNumbers.length} numbers called</span>
+          {highlightedNumbers.size > 0 && (
+            <span className="text-primary font-medium">
+              {highlightedNumbers.size} highlighted
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
