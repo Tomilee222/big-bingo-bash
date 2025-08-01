@@ -138,6 +138,31 @@ export default {
 					'75%': {
 						transform: 'scale(1.05) rotate(-1deg)'
 					}
+				},
+				'touch-feedback': {
+					'0%': {
+						transform: 'scale(1)',
+						boxShadow: '0 0 0 0 hsl(var(--primary) / 0.4)'
+					},
+					'50%': {
+						transform: 'scale(0.95)',
+						boxShadow: '0 0 0 8px hsl(var(--primary) / 0.1)'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						boxShadow: '0 0 0 0 hsl(var(--primary) / 0)'
+					}
+				},
+				'invalid-click': {
+					'0%, 100%': {
+						transform: 'translateX(0)'
+					},
+					'25%': {
+						transform: 'translateX(-2px)'
+					},
+					'75%': {
+						transform: 'translateX(2px)'
+					}
 				}
 			},
 			animation: {
@@ -146,7 +171,9 @@ export default {
 				'bingo-ball-drop': 'bingo-ball-drop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
 				'number-glow': 'number-glow 2s ease-in-out infinite',
 				'card-mark': 'card-mark 0.3s ease-out',
-				'winner-celebration': 'winner-celebration 0.6s ease-in-out infinite'
+				'winner-celebration': 'winner-celebration 0.6s ease-in-out infinite',
+				'touch-feedback': 'touch-feedback 0.3s ease-out',
+				'invalid-click': 'invalid-click 0.3s ease-in-out'
 			}
 		}
 	},

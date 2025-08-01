@@ -38,12 +38,21 @@ export const GameDashboard = ({ playerId, playerCount, onGameEnd, className }: G
         setCalledNumbers(prev => [...prev, newNumber]);
         
         if (!isMuted) {
-          // Simulate number announcement
+          // Enhanced number announcement with better messaging
           toast({
-            title: `${getLetterForNumber(newNumber)}-${newNumber}`,
-            description: "Number called!",
-            duration: 3000,
+            title: `🎱 ${getLetterForNumber(newNumber)}-${newNumber}`,
+            description: "Check your cards and mark if you have it!",
+            duration: 4000,
           });
+          
+          // Simulate sound effect (visual feedback)
+          setTimeout(() => {
+            toast({
+              title: "✨ Number Called!",
+              description: `Look for ${getLetterForNumber(newNumber)}-${newNumber} on your bingo cards`,
+              duration: 2000,
+            });
+          }, 1500);
         }
       }
     }, 3000 + Math.random() * 2000); // Random interval between 3-5 seconds
