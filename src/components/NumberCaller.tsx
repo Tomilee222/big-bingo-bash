@@ -4,10 +4,18 @@ import { cn } from '@/lib/utils';
 interface NumberCallerProps {
   currentNumber: number | null;
   previousNumbers: number[];
+  onNumberClick?: (number: number) => void;
+  highlightedNumbers?: number[];
   className?: string;
 }
 
-export const NumberCaller = ({ currentNumber, previousNumbers, className }: NumberCallerProps) => {
+export const NumberCaller = ({ 
+  currentNumber, 
+  previousNumbers, 
+  onNumberClick,
+  highlightedNumbers = [],
+  className 
+}: NumberCallerProps) => {
   const [isRevealing, setIsRevealing] = useState(false);
 
   useEffect(() => {
@@ -27,6 +35,10 @@ export const NumberCaller = ({ currentNumber, previousNumbers, className }: Numb
     return '';
   };
 
+  const handleNumberClick = (number: number) => {
+    onNumberClick?.(number);
+  };
+
   return (
     <div className={cn("bg-card border border-border rounded-xl p-6 text-center", className)}>
       <h2 className="text-2xl font-bold text-primary mb-6">Number Caller</h2>
@@ -35,10 +47,13 @@ export const NumberCaller = ({ currentNumber, previousNumbers, className }: Numb
       <div className="mb-8">
         {currentNumber ? (
           <div className={cn(
-            "relative mx-auto w-32 h-32 rounded-full flex items-center justify-center text-4xl font-bold",
+            "relative mx-auto w-32 h-32 rounded-full flex items-center justify-center text-4xl font-bold cursor-pointer transition-all duration-300 hover:scale-105",
             "bg-gradient-to-br from-bingo-ball to-white border-4 border-primary shadow-xl",
-            isRevealing && "animate-bingo-ball-drop"
-          )}>
+            isRevealing && "animate-bingo-ball-drop",
+            highlightedNumbers.includes(currentNumber) && "ring-4 ring-bingo-neon ring-opacity-50"
+          )}
+          onClick={() => handleNumberClick(currentNumber)}
+          >
             <div className="text-center">
               <div className="text-primary text-lg font-bold">
                 {getLetterForNumber(currentNumber)}
@@ -65,7 +80,7 @@ export const NumberCaller = ({ currentNumber, previousNumbers, className }: Numb
             {getLetterForNumber(currentNumber)}-{currentNumber}
           </p>
           <p className="text-sm text-muted-foreground mt-1">
-            Mark your cards!
+            Click numbers to highlight matches!
           </p>
         </div>
       )}
@@ -75,16 +90,22 @@ export const NumberCaller = ({ currentNumber, previousNumbers, className }: Numb
         <h3 className="text-lg font-semibold text-foreground">Called Numbers</h3>
         <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
           {previousNumbers.slice(-24).map((number, index) => (
-            <div
+            <button
               key={`${number}-${index}`}
-              className="aspect-square flex items-center justify-center bg-muted text-muted-foreground text-xs rounded border"
+              onClick={() => handleNumberClick(number)}
+              className={cn(
+                "aspect-square flex items-center justify-center text-xs rounded border transition-all duration-200 hover:scale-105 cursor-pointer",
+                highlightedNumbers.includes(number)
+                  ? "bg-bingo-neon text-white border-bingo-neon shadow-lg"
+                  : "bg-muted text-muted-foreground hover:bg-primary/10 hover:border-primary/50"
+              )}
             >
               {number}
-            </div>
+            </button>
           ))}
         </div>
         <p className="text-xs text-muted-foreground">
-          {previousNumbers.length} numbers called
+          {previousNumbers.length} numbers called • Click to highlight
         </p>
       </div>
     </div>
