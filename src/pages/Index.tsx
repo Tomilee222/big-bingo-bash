@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { CartellaBingo } from '@/components/CartellaBingo';
 import { GameLobby } from '@/components/GameLobby';
-import { GameDashboard } from '@/components/GameDashboard';
 
 interface Player {
   id: string;
@@ -10,7 +10,7 @@ interface Player {
 }
 
 const Index = () => {
-  const [gameState, setGameState] = useState<'lobby' | 'playing'>('lobby');
+  const [gameState, setGameState] = useState<'lobby' | 'playing'>('playing'); // Start directly in playing mode
   const [currentPlayers] = useState<Player[]>([
     { id: '1', name: 'You', isReady: true, joinedAt: new Date() },
     { id: '2', name: 'Alice', isReady: true, joinedAt: new Date(Date.now() - 60000) },
@@ -26,10 +26,8 @@ const Index = () => {
 
   if (gameState === 'playing') {
     return (
-      <GameDashboard
-        playerId="1"
-        playerCount={currentPlayers.length}
-        onGameEnd={handleEndGame}
+      <CartellaBingo
+        onExit={handleEndGame}
       />
     );
   }
